@@ -1,14 +1,35 @@
-# Python Dict2Json
+# VSCode Extension dict2json
 
-This is a VS Code extension that Converts python-dict object (defined explicitly in code) to a json-like dict-object.
+VSCode extension converting explicitly-defined `python-dict` to an `json-like python-dict`.
+
+## Motivation
+
+The intent of simplifing the process of; Copying a dict-type in python code, and then converting it to a json-type dict.
+
+For example: logging a dict to the console, then I'd want to quickly use the output as a json. So instead of adding another line as json.dumps(dct), now it's possible to just run command to do the magic.
+
+## Features
+
+Select dict in code -> Command "dict2json" -> Converts to json-like dict.
+![feature dict2json](https://github.com/NoamLoewenstern/dict2json/blob/main/images/feature-usage.png)
+
+## Extension Settings
+
+- `dict2json.apiUrl`: set the remote api url used to convert the dict to json. (basically [pythondict2json](https://github.com/NoamLoewenstern/pythondict2json/))
 
 ## Usage
 
-1. Install the extension from the VS Code Marketplace
-2. Open a file in VS Code
-3. Select some text
-4. Open the command palette (Ctrl+Shift+P on Windows/Linux, Cmd+Shift+P on macOS)
-5. Search for "dict2json: Convert Python-Dict To Json" and press Enter
-6. The extension will convert the python-dict to json-dict (if not invalid selected text)
+1. Select some text (Python dict)
+2. Open the command palette (Ctrl+Shift+P on Windows/Linux, Cmd+Shift+P on macOS)
+3. Search for "dict2json: Convert Python-Dict To Json" (or just dict2json) and press Enter
+4. The extension will convert the python-dict to json-dict (if not invalid selected text)
 
-Please report any issues you encounter on the [GitHub issues page](https://github.com/my-publisher/my-extension/issues).
+## Release Notes
+
+### 0.1.1
+
+Initial release.
+
+# Issues
+
+Please report any issues you encounter on the [GitHub issues page](https://github.com/NoamLoewenstern/dict2json/issues).

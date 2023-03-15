@@ -6,3 +6,12 @@ export const isJson = (str: string) => {
   }
   return true;
 };
+
+export const isValidUrl = (str: string) => {
+  try {
+    new URL(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
