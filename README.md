@@ -11,7 +11,7 @@ For example: logging a dict to the console, then I'd want to quickly use the out
 ## Features
 
 Select dict in code -> Command "dict2json" -> Converts to json-like dict.
-![feature dict2json](https://github.com/NoamLoewenstern/dict2json/blob/main/images/feature-usage.png)
+![feature dict2json](https://github.com/NoamLoewenstern/dict2json/raw/main/images/feature-usage.png)
 
 ## Extension Settings
 
