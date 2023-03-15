@@ -9,13 +9,22 @@ if error - show error message, and log to console the log. */
 import * as vscode from 'vscode';
 import axios, { AxiosError } from 'axios';
 import { loggerChannel as logger } from '../utils/logger';
-import { isJson } from '../utils/helpers';
+import { isJson, isValidUrl } from '../utils/helpers';
+import { getApiUrl } from '../utils/app-config';
 
-const BASE_URL = 'https://pythondict2json-kwwxoeu7ra-uc.a.run.app';
-const CONVERT_URL = BASE_URL + '/api/convert';
+const getBaseUrl = () => {
+  const url = getApiUrl();
+  if (!isValidUrl(url)) {
+    logger.error('dict2json: Invalid URL!', url);
+    vscode.window.showErrorMessage('dict2json: Set Valid API URL in settings. Current setting: ' + url);
+  }
+  return url;
+};
+const getConvertUrl = (): string => getBaseUrl() + '/api/v1/convert';
 
 const convertAPI = (text: string) => {
-  return axios.post<{ result: string }>(CONVERT_URL, {
+  logger.log(`dict2json: Sending request to ${getConvertUrl()}`, text);
+  return axios.post<{ result: string }>(getConvertUrl(), {
     type: 'dict2json',
     data: text,
   });

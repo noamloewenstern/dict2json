@@ -1,15 +1,23 @@
 {
   "name": "dict2json",
+  "icon": "images/icon.png",
   "displayName": "dict2json",
   "description": "Convert Python Dict to Json-formatted Dict",
-  "version": "0.1.0",
+  "publisher": "noamlo",
+  "version": "0.1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NoamLoewenstern/dict2json"
+  },
   "engines": {
     "vscode": "^1.76.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -17,13 +25,24 @@
         "command": "dict2json.convertPythonDictToJson",
         "title": "dict2json: Convert Python-Dict To Json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Dict2Json",
+      "properties": {
+        "dict2json.api-url": {
+          "type": "string",
+          "default": "https://pythondict2json-kwwxoeu7ra-uc.a.run.app",
+          "description": "The URL of the dict2json api-service"
+        }
+      }
+    }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
+    "compile-local": "vsce package",
     "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
