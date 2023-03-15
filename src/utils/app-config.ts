@@ -8,4 +8,4 @@ export const getConfig = ({ fromCache = true } = {}) => {
   return _cachedConfig;
 };
 
-export const getApiUrl = () => getConfig({ fromCache: false }).get('api-url') as string;
+export const getApiUrl = () => getConfig({ fromCache: false }).get('apiUrl') as string;
