@@ -3,7 +3,7 @@
   "icon": "images/icon.png",
   "displayName": "dict2json",
   "description": "Convert Python Dict to Json-formatted Dict",
-  "publisher": "noamlo",
+  "publisher": "noamlstuff",
   "version": "0.1.1",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -40,7 +40,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "compile-local": "vsce package",
+    "package": "vsce package",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
