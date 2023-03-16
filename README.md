@@ -15,7 +15,7 @@ Select dict in code -> Command "dict2json" -> Converts to json-like dict.
 
 ## Extension Settings
 
-- `dict2json.apiUrl`: set the remote api url used to convert the dict to json. (basically [pythondict2json](https://github.com/NoamLoewenstern/pythondict2json/))
+- `dict2json.pythonPath`: The Python path to use for running the dict2json script
 
 ## Usage
 

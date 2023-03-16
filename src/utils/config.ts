@@ -11,8 +11,6 @@ export const getConfig = ({ fromCache = true } = {}) => {
   return _cachedConfig;
 };
 
-export const getApiUrl = () => getConfig({ fromCache: false }).get('apiUrl') as string;
-
 let _defaultPythonPath: string | null | undefined = undefined;
 const getDefaultPythonPath = () => {
   if (_defaultPythonPath === undefined) {
