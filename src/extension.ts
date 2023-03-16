@@ -1,14 +1,17 @@
 // The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { convertPythonDictToJsonCommand } from './convert';
+import { convertPythonDictToJsonCommand } from './commands/convert';
+import { getPythonPath, getPythonScriptFilepath } from './utils/config';
 import { loggerChannel } from './utils/logger';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+export const checkInitialPythonPath = () => {
+  getPythonPath({ showError: true });
+  getPythonScriptFilepath({ showError: true });
+};
+
 export function activate(context: vscode.ExtensionContext) {
-  loggerChannel.log('dict2json: Extension is now active!');
-  // register command for convert python dict to json
+  checkInitialPythonPath();
+
   let disposable = vscode.commands.registerCommand('dict2json.convertPythonDictToJson', convertPythonDictToJsonCommand);
   context.subscriptions.push(disposable);
 }
