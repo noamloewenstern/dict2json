@@ -24,6 +24,10 @@
       {
         "command": "dict2json.convertPythonDictToJson",
         "title": "dict2json: Convert Python-Dict To Json"
+      },
+      {
+        "command": "dict2json.convertJsonToPythonDict",
+        "title": "dict2json: Convert Json To Python-Dict"
       }
     ],
     "configuration": {

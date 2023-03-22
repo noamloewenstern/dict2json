@@ -18,7 +18,8 @@ interface IConvertScriptResults {
   ['log_msg']: string;
 }
 
-async function convertDict2Json(text: string, { timeout } = { timeout: 5000 }) {
+type Commands = 'dict2json' | 'json2dict';
+async function runConvert(command: Commands, text: string, { timeout } = { timeout: 5000 }) {
   const { error, pythonPath } = getPythonPath({ showError: true });
   if (error) {
     return;
@@ -35,7 +36,7 @@ async function convertDict2Json(text: string, { timeout } = { timeout: 5000 }) {
       return;
     }
 
-    const pythonProcess = child_process.spawn(pythonPath, [pythonScriptPath, text]);
+    const pythonProcess = child_process.spawn(pythonPath, [pythonScriptPath, `--command=${command}`, text]);
 
     let stderr = '';
     let stdout = '';
@@ -90,55 +91,76 @@ async function convertDict2Json(text: string, { timeout } = { timeout: 5000 }) {
     }, timeout);
   });
 }
-const isPotentialDict = (text: string) => {
-  const trimmedText = text.trim();
-  return trimmedText.startsWith('{') && trimmedText.endsWith('}');
-};
 
-const getText = () => {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    const msg = 'No open text editor!';
-    throw new Error(msg);
-  }
-
-  const selection = editor.selection;
-  if (!selection) {
-    const msg = 'No text selected!';
-    throw new Error(msg);
-  }
-  const text = editor.document.getText(selection);
-  validateText(text);
-  return { editor, selection, text };
-};
-
-const validateText = (text: string) => {
-  if (!text) {
-    const msg = 'No text selected!';
-    throw new Error(msg);
-  }
-  if (isJson(text)) {
-    const msg = 'Selected text is already JSON';
-    vscode.window.showInformationMessage(msg);
-    throw new Error();
-  }
-  if (!isPotentialDict(text)) {
-    const msg = 'Selected text is not a Python Dict!';
-    throw new Error(msg);
-  }
-};
-
-export async function convertPythonDictToJsonCommand() {
-  const { editor, selection, text } = getText();
-
-  const result = (await convertDict2Json(text))!;
-  if ('error' in result) {
-    return;
-  }
-  const jsonResult = result.output;
-  logger.log(`input selected: ${text}\nconverted output: ${jsonResult}`);
-  editor.edit(edit => {
-    edit.replace(selection, jsonResult);
-    vscode.window.showInformationMessage('dict2json: Success!');
-  });
+async function convertDict2Json(text: string, { timeout } = { timeout: 5000 }) {
+  return runConvert('dict2json', text, { timeout });
 }
+async function convertJson2Dict(text: string, { timeout } = { timeout: 5000 }) {
+  return runConvert('json2dict', text, { timeout });
+}
+
+export const convertCommand = (command: Commands) => async () => {
+  const isPotentialDict = (text: string) => {
+    const trimmedText = text.trim();
+    return trimmedText.startsWith('{') && trimmedText.endsWith('}');
+  };
+
+  const getText = () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      const msg = 'No open text editor!';
+      throw new Error(msg);
+    }
+
+    const selection = editor.selection;
+    if (!selection) {
+      const msg = 'No text selected!';
+      throw new Error(msg);
+    }
+    const text = editor.document.getText(selection);
+    validateText(text);
+    return { editor, selection, text };
+  };
+
+  const validateText = (text: string) => {
+    if (!text) {
+      const msg = 'No text selected!';
+      throw new Error(msg);
+    }
+    if (!isPotentialDict(text)) {
+      const msg = 'Selected text is not a Python Dict or Json!';
+      throw new Error(msg);
+    }
+    if (command === 'dict2json' && isJson(text)) {
+      const msg = 'Selected text is already JSON';
+      throw new Error(msg);
+    }
+    if (command === 'json2dict' && !isJson(text)) {
+      const msg = 'Selected Non-Valid JSON';
+      throw new Error(msg);
+    }
+  };
+
+  const commandsRunners = {
+    dict2json: convertDict2Json,
+    json2dict: convertJson2Dict,
+  };
+  try {
+    const { editor, selection, text } = getText();
+    const result = (await commandsRunners[command](text))!;
+    if ('error' in result) {
+      return;
+    }
+    const jsonResult = result.output;
+    logger.log(`input selected: ${text}\nconverted output: ${jsonResult}`);
+    editor.edit(edit => {
+      edit.replace(selection, jsonResult);
+      vscode.window.showInformationMessage('dict2json: Success!');
+    });
+  } catch (err: Error | any) {
+    if (err?.message) {
+      logger.error(err.message);
+      vscode.window.showErrorMessage(err.message);
+    }
+  }
+};
