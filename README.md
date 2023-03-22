@@ -26,9 +26,16 @@ Select dict in code -> Command "dict2json" -> Converts to json-like dict.
 
 ## Release Notes
 
-### 0.1.1
+### [0.1.1]
 
 Initial release.
+
+## [0.2.1] - 2023-03-17
+
+## [0.3.1] - 2023-03-22
+
+- Fixed error thrown in main command
+- Added command json2dict
 
 # Issues
 

@@ -4,7 +4,7 @@
   "displayName": "dict2json",
   "description": "Convert Python Dict to Json-formatted Dict",
   "publisher": "noamlstuff",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/NoamLoewenstern/dict2json"
